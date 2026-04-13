@@ -366,18 +366,31 @@
 
         document.getElementById('result').style.display = 'block';
     }
-  window.onload = function() {
-    html5QrcodeScanner = new Html5QrcodeScanner(
-        "reader",
-        { 
-            fps: 10, 
-            qrbox: {width: 250, height: 250},
-            rememberLastUsedCamera: true,
-            showTorchButtonIfPossible: true
+ window.onload = function() {
+        html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader", {
+                fps: 10,
+                qrbox: { width: 250, height: 250 },
+                disableFlip: false // Prueba con false para ver si ayuda
+            },
+            /* verbose= */ false);
+
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    };
+
+    function onScanFailure(error) {
+        // Muestra el mensaje de error de la cámara
+        const cameraStatus = document.getElementById('camera-status-message');
+        if (cameraStatus) {
+            cameraStatus.style.color = 'red';
+            cameraStatus.innerHTML = '🚫 Error al iniciar la cámara: ' + error;
+            // Si el error es por permisos, da una sugerencia
+            if (error.includes("NotAllowedError") || error.includes("Permission denied")) {
+                cameraStatus.innerHTML += '<br>Por favor, permite el acceso a la cámara en la configuración de tu navegador.';
+            }
         }
-    );
-    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-};
+        console.error(Error de cámara: ${error});
+    }
         
 
 </script>
