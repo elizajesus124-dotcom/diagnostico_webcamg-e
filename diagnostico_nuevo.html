@@ -6,7 +6,7 @@
     <title>Laboratorio Diesel Gonzales E&E</title>
     
     <!-- CARGA RÁPIDA -->
-    <script src="html5-qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -56,6 +56,14 @@
             justify-content: center;
         }
         
+        /* Nuevo estilo para el mensaje de estado de la cámara */
+        #camera-status-message {
+            color: #666; 
+            font-size:18px;
+            text-align: center;
+            padding: 10px;
+        }
+
         .result { 
             margin-top: 20px; 
             padding: 20px; 
@@ -172,9 +180,10 @@
         <p>Base de Datos Técnica de Inyectores</p>
     </div>
     
-    <div id="reader">
-        <p style="color:#666; font-size:18px;">📸 Iniciando cámara...</p>
-    </div>
+    <div id="reader"></div>
+    <!-- Mensaje de estado de la cámara fuera del div 'reader' -->
+    <p id="camera-status-message" style="color:#666; font-size:18px;">📸 Iniciando cámara...</p>
+
 
     <div id="result" class="result">
         <h2>📋 Datos del Inyector</h2>
@@ -245,6 +254,7 @@
 
 <script>
     const { jsPDF } = window.jspdf;
+    let html5QrcodeScanner; // Declarar a nivel global para que sea accesible
 
     // BASE DE DATOS COMPLETA
     const baseDatosInyectores = {
@@ -324,11 +334,7 @@
             modelo: "Serie CRDi",
             codigo: "28229875 / 33800-4A710",
             valvula: "9308-625C",
-            tobera: "L325PBC",
-            presion: "250 - 280 bar",
-            retorno: "Menos de 20 ml",
-            aspersion: "Cono definido",
-            fugas: "No debe presentar goteo"
+            tobera: "L
         }
     };
 
